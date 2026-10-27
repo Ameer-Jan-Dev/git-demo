@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Modern Login</title>
+    <!-- Google Fonts & Font Awesome Icons -->
+    <link rel="preconnect" href="https://googleapis.com" />
+    <link rel="preconnect" href="https://gstatic.com" crossorigin />
+    <link
+      href="https://googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="https://cloudflare.com" />
+
+    <style>
+      /* CSS Reset & Variables */
+      :root {
+        --primary: #4f46e5;
+        --primary-hover: #4338ca;
+        --background: #fafafa;
+        --surface: #ffffff;
+        --text-main: #1f2937;
+        --text-muted: #6b7280;
+        --border: #e5e7eb;
+        --focus-ring: rgba(79, 70, 229, 0.15);
+        --radius-lg: 16px;
+        --radius-md: 10px;
+        --transition: all 0.2s ease-in-out;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: var(--background);
+        color: var(--text-main);
+        display: flex;
+        min-height: 100vh;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+
+      /* Layout Container */
+      .login-container {
+        background-color: var(--surface);
+        width: 100%;
+        max-width: 480px;
+        border-radius: var(--radius-lg);
+        box-shadow:
+          0 4px 6px -1px rgba(0, 0, 0, 0.05),
+          0 10px 15px -3px rgba(0, 0, 0, 0.05),
+          0 0 0 1px rgba(0, 0, 0, 0.03);
+        padding: 40px;
+      }
+
+      /* Header Styles */
+      .header {
+        text-align: center;
+        margin-bottom: 32px;
+      }
+
+      .logo {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 48px;
+        height: 48px;
+        background-color: rgba(79, 70, 229, 0.1);
+        color: var(--primary);
+        border-radius: var(--radius-md);
+        font-size: 24px;
+        margin-bottom: 16px;
+      }
+
+      .title {
+        font-size: 24px;
+        font-weight: 700;
+        letter-spacing: -0.5px;
+        margin-bottom: 8px;
+      }
+
+      .subtitle {
+        font-size: 14px;
+        color: var(--text-muted);
+      }
+
+      .subtitle a {
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: 500;
+      }
+
+      .subtitle a:hover {
+        text-decoration: underline;
+      }
+
+      /* Social Authentication Buttons */
+      .social-group {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin-bottom: 24px;
+      }
+
+      .btn-social {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        background-color: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+        padding: 10px 16px;
+        font-family: inherit;
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--text-main);
+        cursor: pointer;
+        transition: var(--transition);
+      }
+
+      .btn-social:hover {
+        background-color: #f9fafb;
+        border-color: #d1d5db;
+      }
+
+      /* Divider */
+      .divider {
+        display: flex;
+        align-items: center;
+        text-align: center;
+        margin-bottom: 24px;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: var(--text-muted);
+      }
+
+      .divider::before,
+      .divider::after {
+        content: "";
+        flex: 1;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .divider:not(:empty)::before {
+        margin-right: 12px;
+      }
+
+      .divider:not(:empty)::after {
+        margin-left: 12px;
+      }
+
+      /* Form Controls */
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .label-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 6px;
+      }
+
+      label {
+        font-size: 14px;
+        font-weight: 500;
+      }
+
+      .link-forgot {
+        font-size: 13px;
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: 500;
+      }
+
+      .link-forgot:hover {
+        text-decoration: underline;
+      }
+
+      .input-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+      }
+
+      .input-wrapper i {
+        position: absolute;
+        left: 14px;
+        color: var(--text-muted);
+        font-size: 16px;
+        pointer-events: none;
+      }
+
+      .input-wrapper input {
+        width: 100%;
+        padding: 12px 14px 12px 42px;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+        font-family: inherit;
+        font-size: 15px;
+        color: var(--text-main);
+        background-color: var(--surface);
+        outline: none;
+        transition: var(--transition);
+      }
+
+      .input-wrapper input::placeholder {
+        color: #9ca3af;
+      }
+
+      .input-wrapper input:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 4px var(--focus-ring);
+      }
+
+      /* Utilities Row */
+      .utilities-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 24px;
+      }
+
+      .checkbox-container {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        color: var(--text-muted);
+        user-select: none;
+      }
+
+      .checkbox-container input {
+        cursor: pointer;
+        width: 16px;
+        height: 16px;
+        accent-color: var(--primary);
+      }
+
+      /* Primary Action Button */
+      .btn-submit {
+        width: 100%;
+        background-color: var(--primary);
+        color: #ffffff;
+        border: none;
+        border-radius: var(--radius-md);
+        padding: 12px 24px;
+        font-family: inherit;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: var(--transition);
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      }
+
+      .btn-submit:hover {
+        background-color: var(--primary-hover);
+      }
+
+      .btn-submit:focus-visible {
+        outline: 2px solid var(--primary);
+        outline-offset: 2px;
+      }
+
+      /* Responsive Breakpoints */
+      @media (max-width: 480px) {
+        body {
+          padding: 12px;
+          background-color: var(--surface);
+        }
+
+        .login-container {
+          box-shadow: none;
+          padding: 24px 12px;
+        }
+
+        .social-group {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="login-container">
+      <!-- Header -->
+      <header class="header">
+        <div class="logo">
+          <i class="fa-solid fa-layer-group"></i>
+        </div>
+        <h1 class="title">Welcome back</h1>
+        <p class="subtitle">Don't have an account? <a href="#">Sign up</a></p>
+      </header>
+
+      <!-- Social Login Stack -->
+      <div class="social-group">
+        <button type="button" class="btn-social">
+          <i class="fa-brands fa-google" style="color: #ea4335"></i>
+          Google
+        </button>
+        <button type="button" class="btn-social">
+          <i class="fa-brands fa-apple" style="color: #000000"></i>
+          Apple
+        </button>
+      </div>
+
+      <div class="divider">Or continue with</div>
+
+      <!-- Credentials Form -->
+      <form action="#" method="POST" autocomplete="on">
+        <!-- Email Input -->
+        <div class="form-group">
+          <div class="label-row">
+            <label id="email-label" for="email">Email address</label>
+          </div>
+          <div class="input-wrapper">
+            <i class="fa-regular fa-envelope" aria-hidden="true"></i>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="name@company.com"
+              aria-labelledby="email-label"
+              required
+            />
+          </div>
+        </div>
+
+        <!-- Password Input -->
+        <div class="form-group">
+          <div class="label-row">
+            <label id="password-label" for="password">Password</label>
+            <a href="#" class="link-forgot">Forgot password?</a>
+          </div>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-lock" aria-hidden="true"></i>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="••••••••"
+              aria-labelledby="password-label"
+              required
+            />
+          </div>
+        </div>
+      </form>
+    </main>
+  </body>
+</html>
